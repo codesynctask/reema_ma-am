@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <canvas id="stars"></canvas>
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- == HERO == -->
+  <section class="hero">
+    <div class="balloon" style="background:radial-gradient(circle at 35% 30%, #ff9db5, #ff6f91); left:12%; top:20%;">
+    </div>
+    <div class="balloon" style="background:radial-gradient(circle at 35% 30%, #ffe27a, #f4b942); left:78%; top:32%;">
+    </div>
+    <div class="balloon" style="background:radial-gradient(circle at 35% 30%, #d3c2ff, #b6a6e0); left:20%; top:62%;">
+    </div>
+    <div class="balloon" style="background:radial-gradient(circle at 35% 30%, #ff9db5, #ff6f91); left:85%; top:66%;">
+    </div>
+
+    <p class="eyebrow">A little celebration for</p>
+    <h1>Happy Birthday,<br><em id="nameSlot">Reema Ma'am</em></h1>
+    <p class="sub">Scroll down and let's celebrate another year of you being exactly who you are.</p>
+    <div class="scroll-cue"><span>Scroll</span>
+      <div class="line"></div>
+    </div>
+  </section>
+
+  <!-- == MESSAGE == -->
+  <section class="message">
+    <p class="eyebrow">One more year, closer</p>
+    <h2>Another year <em style="font-style:italic;color:var(--coral-400)">wiser</em>, another year <em
+        style="font-style:italic;color:var(--gold-300)">brighter</em>.</h2>
+    <p>Every candle on this cake is a year you turned into a story — some loud, some quiet, all worth telling. Here's to
+      the chapters still unwritten.</p>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num" id="ageNum">28</div>
+        <div class="lbl">Years of you</div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="lbl">Reasons to smile</div>
+      </div>
+      <div class="stat">
+        <div class="num">1</div>
+        <div class="lbl">Wish, on you</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- == CAKE == -->
+  <section class="cake-section">
+    <div class="cake-caption">
+      <p class="eyebrow">Make it count</p>
+      <h3 id="cakeCaptionText">Keep scrolling to light the candles…</h3>
+    </div>
+    <div class="cake-wrap">
+      <div class="cake">
+        <div class="candles" id="candleRow">
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+          <div class="candle">
+            <div class="flame"></div>
+          </div>
+        </div>
+        <div class="drip"></div>
+        <div class="tier tier-3"></div>
+        <div class="tier tier-2"></div>
+        <div class="tier tier-1"></div>
+        <div class="plate"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- == WISHES == -->
+<section class="wishes-section">
+  <div>
+    <p class="eyebrow">From Me</p>
+    <h2 style="font-size:clamp(2rem,5vw,3rem);">A Few Small Wishes</h2>
+  </div>
+
+  <div class="wishes-track" id="wishesTrack">
+    <div class="wish-card">
+      <div class="mark">"</div>
+      <p>I wish that you achieve your dream of buying your own house very soon.</p>
+    </div>
+
+    <div class="wish-card">
+      <div class="mark">"</div>
+      <p>Stay as wonderfully unique, kind, and determined as you've always been. It's a beautiful combination.</p>
+    </div>
+
+    <div class="wish-card">
+      <div class="mark">"</div>
+      <p>Here's to more moments of laughter that leave your cheeks aching and fewer things that cause you pain.</p>
+    </div>
+  </div>
+
+  <p class="drag-hint">← Drag to read more →</p>
+</section>
+
+  <!-- == FINALE == -->
+  <section class="finale">
+    <p class="eyebrow">The moment</p>
+    <h2>Close your eyes.<br>Make <em>a wish</em>.</h2>
+    <p>Whatever you're hoping for this year — we're rooting for it to find you.</p>
+    <button class="wish-btn" id="wishBtn">Blow out the candles 🎂</button>
+    <br>
+    <p class="finale-note" id="finaleNote">Happy Birthday. Ma'am😊😊😊😊😊😊.</p>
+  </section>
+
+  <footer>Made with love, one scroll at a time</footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script>
+    /* 
+       EASY CUSTOMIZATION
+    */
+    const CONFIG = {
+      name: "Reema Ma'am",   // <-- change the birthday person's name here
+      age: 28          // <-- change the age here
+    };
+    document.getElementById('nameSlot').textContent = CONFIG.name;
+    document.getElementById('ageNum').textContent = CONFIG.age;
+    document.title = "Happy Birthday, " + CONFIG.name;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* 
+       STARFIELD (ambient canvas backdrop)
+    */
+    const starCanvas = document.getElementById('stars');
+    const sctx = starCanvas.getContext('2d');
+    let stars = [];
+    function sizeStars() {
+      starCanvas.width = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+      stars = Array.from({ length: 120 }, () => ({
+        x: Math.random() * starCanvas.width,
+        y: Math.random() * starCanvas.height,
+        r: Math.random() * 1.4 + .2,
+        a: Math.random(),
+        speed: Math.random() * .015 + .003
+      }));
+    }
+    sizeStars();
+    window.addEventListener('resize', sizeStars);
+    function drawStars() {
+      sctx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      sctx.fillStyle = '#fff8ef';
+      stars.forEach(s => {
+        s.a += s.speed;
+        const op = (Math.sin(s.a) + 1) / 2 * .8 + .1;
+        sctx.globalAlpha = op;
+        sctx.beginPath();
+        sctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sctx.fill();
+      });
+      sctx.globalAlpha = 1;
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    /* 
+       HERO ENTRANCE
+    */
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .to('.hero .eyebrow', { opacity: 1, y: -6, duration: .8 })
+      .from('.hero h1', { y: 40, opacity: 0, duration: 1 }, '-=.5')
+      .to('.hero .sub', { opacity: 1, y: 0, duration: .9 }, '-=.5')
+      .to('.scroll-cue', { opacity: 1, duration: .8 }, '-=.4')
+      .from('.balloon', { opacity: 0, y: 80, stagger: .15, duration: 1.1 }, '-=1');
+
+    /* ambient balloon float */
+    gsap.utils.toArray('.balloon').forEach((b, i) => {
+      gsap.to(b, {
+        y: '+=' + (18 + i * 4),
+        x: '+=' + (i % 2 === 0 ? 10 : -10),
+        duration: 3.5 + i * .4,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+      });
+    });
+    gsap.to('.scroll-cue', {
+      opacity: 0,
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: '30% top', scrub: true }
+    });
+
+    /* 
+       MESSAGE SECTION REVEAL
+    */
+    gsap.from('.message .eyebrow, .message h2, .message p, .stat', {
+      opacity: 0, y: 30, duration: .9, ease: 'power2.out', stagger: .12,
+      scrollTrigger: { trigger: '.message', start: 'top 75%' }
+    });
+
+    /* 
+       CAKE SECTION — pinned scroll lights candles one by one
+       (signature interaction)
+    */
+    const candles = gsap.utils.toArray('.candle');
+    const captions = [
+      "Keep scrolling to light the candles…",
+      "One flame for every good thing this year.",
+      "Two down. The story's just getting warm.",
+      "Halfway lit — halfway to whatever's next.",
+      "Almost there. Feel that?",
+      "All lit. Now — make it count."
+    ];
+    const captionEl = document.getElementById('cakeCaptionText');
+
+    if (!reduceMotion) {
+      ScrollTrigger.create({
+        trigger: '.cake-section',
+        start: 'top top',
+        end: '+=120%',
+        pin: true,
+        scrub: .6,
+        onUpdate(self) {
+          const p = self.progress; // 0 -> 1
+          const litCount = Math.min(candles.length, Math.floor(p * (candles.length + 0.999)));
+          candles.forEach((c, i) => c.classList.toggle('lit', i < litCount));
+          const idx = Math.min(captions.length - 1, Math.round(p * (captions.length - 1)));
+          if (captionEl.textContent !== captions[idx]) captionEl.textContent = captions[idx];
+        }
+      });
+    } else {
+      candles.forEach(c => c.classList.add('lit'));
+      captionEl.textContent = captions[captions.length - 1];
+    }
+
+    /* 
+       WISHES CAROUSEL — reveal + gentle parallax on scroll
+    */
+    gsap.from('.wish-card', {
+      opacity: 0, y: 40, duration: .8, stagger: .15, ease: 'power2.out',
+      scrollTrigger: { trigger: '.wishes-section', start: 'top 70%' }
+    });
+
+    /* 
+       FINALE
+    */
+    gsap.from('.finale .eyebrow, .finale h2, .finale p, .wish-btn', {
+      opacity: 0, y: 30, duration: .9, stagger: .12, ease: 'power2.out',
+      scrollTrigger: { trigger: '.finale', start: 'top 70%' }
+    });
+
+    /* 
+       CONFETTI BURST on "blow out the candles"
+    */
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const cctx = confettiCanvas.getContext('2d');
+    function sizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+    sizeConfetti();
+    window.addEventListener('resize', sizeConfetti);
+
+    const confettiColors = ['#ff6f91', '#f4b942', '#ffd579', '#b6a6e0', '#fff8ef'];
+    let particles = [];
+    function burstConfetti(originX, originY, count = 140) {
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: originX, y: originY,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (Math.random() - 1.6) * 12,
+          size: Math.random() * 7 + 4,
+          color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+          rot: Math.random() * 360,
+          vr: (Math.random() - 0.5) * 12,
+          life: 0,
+          maxLife: 100 + Math.random() * 40
+        });
+      }
+    }
+    function tickConfetti() {
+      cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      particles.forEach(p => {
+        p.vy += 0.22;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr;
+        p.life++;
+        const fade = Math.max(0, 1 - p.life / p.maxLife);
+        cctx.save();
+        cctx.globalAlpha = fade;
+        cctx.translate(p.x, p.y);
+        cctx.rotate(p.rot * Math.PI / 180);
+        cctx.fillStyle = p.color;
+        cctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * .6);
+        cctx.restore();
+      });
+      particles = particles.filter(p => p.life < p.maxLife && p.y < confettiCanvas.height + 50);
+      requestAnimationFrame(tickConfetti);
+    }
+    tickConfetti();
+
+    const wishBtn = document.getElementById('wishBtn');
+    const finaleNote = document.getElementById('finaleNote');
+    let blown = false;
+    wishBtn.addEventListener('click', () => {
+      const rect = wishBtn.getBoundingClientRect();
+      burstConfetti(rect.left + rect.width / 2, rect.top, 160);
+      // second burst from top corners for a fuller celebration
+      burstConfetti(window.innerWidth * 0.15, -20, 60);
+      burstConfetti(window.innerWidth * 0.85, -20, 60);
+
+      candles.forEach(c => c.classList.remove('lit'));
+
+      if (!blown) {
+        blown = true;
+        gsap.fromTo(finaleNote, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .8, ease: 'power2.out' });
+        gsap.fromTo('.finale h2', { scale: 1 }, { scale: 1.04, duration: .3, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+      } else {
+        gsap.fromTo('.finale h2', { scale: 1 }, { scale: 1.04, duration: .3, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+      }
+    });
+  </script>
+</body>
+
+</html>
